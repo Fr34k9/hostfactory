@@ -24,11 +24,47 @@
             <div id="domainAccountList">
                 
             </div>
+            <div class="text-center mt-4">
+                <button id="createAccount" class="bg-red-600 rounded-md px-3 py-1 text-white hover:bg-black">
+                    Account hinzufügen
+                </button>
+            </div>
         </div>
     </main>
 
     <modal id="modal" class="fixed z-50 inset-0 bg-gray-900 bg-opacity-60 overflow-y-auto h-full w-full px-4 modal hidden">
-        MODAL
+        <div class="relative top-40 mx-auto shadow-xl rounded-md bg-white max-w-md border p-4">
+            <h1 class="text-2xl uppercase font-extrabold">Domain-Account erstellen</h1>
+            <form id="domainAccountForm" class="flex flex-col mt-4">
+                <label for="domainName" class="block mb-2 text-sm text-gray-900">Domainname</label>
+                <input type="text" id="domainName" name="domainName" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+
+                <div class="grid gap-6 mb-6 md:grid-cols-2 mt-4">
+                    <div>
+                        <label for="ftpUsername" class="block mb-2 text-sm text-gray-900">FTP-Benutzername</label>
+                        <input type="text" id="ftpUsername" name="ftpUsername" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                    </div>
+                    <div>
+                        <label for="ftpPassword" class="block mb-2 text-sm text-gray-900">FTP-Passwort</label>
+                        <input type="password" id="ftpPassword" name="ftpPassword" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                    </div>
+                </div>
+
+                <button type="submit" id="createDomainAccount" name="createDomainAccount"
+                    class="group inline-flex h-12 items-center justify-center rounded-md bg-red-600 px-6 text-white hover:bg-black">
+                    <span>Domain-Account erstellen</span>
+                    <div class="ml-1 transition duration-300 group-hover:rotate-[360deg]"><svg width="15"
+                            height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg"
+                            class="h-5 w-5">
+                            <path
+                                d="M8.14645 3.14645C8.34171 2.95118 8.65829 2.95118 8.85355 3.14645L12.8536 7.14645C13.0488 7.34171 13.0488 7.65829 12.8536 7.85355L8.85355 11.8536C8.65829 12.0488 8.34171 12.0488 8.14645 11.8536C7.95118 11.6583 7.95118 11.3417 8.14645 11.1464L11.2929 8H2.5C2.22386 8 2 7.77614 2 7.5C2 7.22386 2.22386 7 2.5 7H11.2929L8.14645 3.85355C7.95118 3.65829 7.95118 3.34171 8.14645 3.14645Z"
+                                fill="currentColor" fill-rule="evenodd" clip-rule="evenodd"></path>
+                        </svg>
+                    </div>
+                </button>
+                <div id="result" class="mt-2 text-sm text-center"></div>
+            </form>
+        </div>
     </modal>
 
     <script src="assets/js/script.js"></script>
