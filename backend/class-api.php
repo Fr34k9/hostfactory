@@ -5,7 +5,8 @@ class Api {
     private $domainManager;
 
     public function __construct() {
-        $this->domainManager = new DomainManager('URL', 'USER', 'PASSWORD');
+        $config = include('config.php');
+        $this->domainManager = new DomainManager($config->url, $config->username, $config->password);
     }
 
     /**
@@ -42,9 +43,9 @@ class Api {
     public function handleRequest($action) {
         switch ($action) {
             case 'createDomainAccount':
-                $domainName = $_POST['domainName'];
-                $ftpUsername = $_POST['ftpUsername'];
-                $ftpPassword = $_POST['ftpPassword'];
+                $domainName = !empty( $_POST['domainName'] ) ? $_POST['domainName'] : '';
+                $ftpUsername = !empty( $_POST['ftpUsername'] ) ? $_POST['ftpUsername'] : '';
+                $ftpPassword = !empty( $_POST['ftpPassword'] ) ? $_POST['ftpPassword'] : '';
                 echo $this->createDomainAccount($domainName, $ftpUsername, $ftpPassword);
                 break;
 
@@ -59,5 +60,5 @@ class Api {
 }
 
 $api = new Api();
-$action = $_POST['action'];
+$action = !empty( $_POST['action'] ) ? $_POST['action'] : '';
 $api->handleRequest($action);

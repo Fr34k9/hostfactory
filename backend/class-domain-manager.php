@@ -63,6 +63,7 @@ class DomainManager {
      * @return void
      */
     public function createDomain($domainName, $ftpUser, $ftpPassword) {
+        $config = include('config.php');
         $xmlRequest = '<?xml version="1.0" encoding="UTF-8"?>' .
             '<packet version="1.6.9.0">' .
             '<webspace>' .
@@ -70,7 +71,7 @@ class DomainManager {
             '<gen_setup>' .
             '<name>' . $domainName . '</name>' .
             '<htype>vrt_hst</htype>' .
-            '<ip_address>185.66.110.34</ip_address>' . //TODO: ENV
+            '<ip_address>' . $config->ip . '</ip_address>' .
             '</gen_setup>' .
             '<hosting>' .
             '<vrt_hst>' .
