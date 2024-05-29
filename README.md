@@ -39,3 +39,4 @@ Für die Umsetzung der Aufgabe steht ein VPS 'WebEdition' mit vorinstalliertem P
 
 ## Problems
 - API erstellt Domain obwohl Fehlermeldung vorhanden
+- Status der Websites ist immer 0 - Daher werden diese immer als "inaktiv" angezeigt

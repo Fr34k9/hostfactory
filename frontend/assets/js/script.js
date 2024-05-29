@@ -14,7 +14,7 @@ function updateDomainList() {
         if (data.length > 0) {
             data.forEach(domain => {
                 let status = domain.active ? 'Aktiv' : 'Inaktiv';
-                let status_color = domain.active ? 'bg-green-500' : 'bg-red-500';
+                let status_color = domain.active ? 'bg-green-500' : 'bg-[#e30613]';
 
                 domainList.innerHTML += `
                     <div class="flex justify-between hover:bg-gray-100 mt-2">
@@ -58,8 +58,8 @@ document.getElementById('domainAccountForm').addEventListener('submit', function
     .then(response => response.json())
     .then(data => {
         // Update modal with response
-        document.getElementById('result').classList.remove('text-green-500', 'text-red-500');
-        document.getElementById('result').classList.add(data.error ? 'text-red-500' : 'text-green-500');
+        document.getElementById('result').classList.remove('text-green-500', 'text-[#e30613]');
+        document.getElementById('result').classList.add(data.error ? 'text-[#e30613]' : 'text-green-500');
 
         if(data.error) {
             document.getElementById('result').textContent = data.error;
@@ -74,8 +74,8 @@ document.getElementById('domainAccountForm').addEventListener('submit', function
     })
     .catch(error => {
         console.log(error);
-        document.getElementById('result').classList.remove('text-green-500', 'text-red-500');
-        document.getElementById('result').classList.add('text-red-500');
+        document.getElementById('result').classList.remove('text-green-500', 'text-[#e30613]');
+        document.getElementById('result').classList.add('text-[#e30613]');
         document.getElementById('result').textContent = 'Ein Fehler ist aufgetreten';
         submitButton.disabled = false;
     });
