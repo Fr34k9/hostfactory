@@ -46,10 +46,11 @@ class DomainManager {
             $data = [];
             $data['id'] = (string) $domainData->id;
             $data['name'] = (string) $domainData->data->gen_info->name;
-            $data['status'] = (string) $domainData->data->gen_info->status;
             $data['created'] = (string) $domainData->data->gen_info->cr_date;
             $domains[] = $data;
         }
+
+        $domains = $this->addSiteStatuses($domains);
 
         return $domains;
     }
@@ -102,6 +103,59 @@ class DomainManager {
         }
 
         return ['success' => 'Domain successfully created.'];
+    }
+
+    /**
+     * Adds site statuses for the given domains.
+     *
+     * @param array $domains An array of domains.
+     * @return array An array containing the list of domains incl. status
+     */
+    private function addSiteStatuses($domains) {
+        $domainNames = array_column($domains, 'name');
+
+        $xmlRequest = '<?xml version="1.0" encoding="UTF-8"?>' .
+            '<packet version="1.6.9.0">' .
+            '<site>' .
+            '<get>' .
+            '<filter>' .
+            '<name>' . implode('</name><name>', $domainNames) . '</name>' .
+            '</filter>' .
+            '<dataset>' .
+            '<gen_info/>' .
+            '</dataset>' .
+            '</get>' .
+            '</site>' .
+            '</packet>';
+
+        $response = $this->sendApiRequest($xmlRequest);
+
+        $xml = simplexml_load_string($response);
+
+        $statusText = array();
+        $statusText[0] = 'Active';
+        $statusText[1] = 'Suspended';
+        $statusText[2] = 'Suspended because of parent object';
+        $statusText[4] = 'Suspended because of backup/restore';
+        $statusText[8] = 'Service is temporarily off for web';
+        $statusText[16] = 'Suspended by administrator';
+        $statusText[32] = 'Suspended by reseller';
+        $statusText[64] = 'Suspended by client';
+        $statusText[256] = 'Suspended due to expiration';
+
+        $data = array();
+        foreach( $domains as $domain ) {
+            foreach ($xml->site->get->result as $domainData) {
+                if( $domain['name'] == (string) $domainData->data->gen_info->name ) {
+                    $statusCode = (int) $domainData->data->gen_info->status;
+                    $domain['status']['code'] = !empty( $statusCode ) ? $statusCode : 0;
+                    $domain['status']['text'] = !empty( $statusText[$statusCode] ) ? $statusText[$statusCode] : 'Unknown';
+                    $data[] = $domain;
+                }
+            }
+        }
+
+        return $data;
     }
 
     /**

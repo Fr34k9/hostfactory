@@ -12,8 +12,7 @@ function updateDomainList() {
 
         if (data.length > 0) {
             data.forEach(domain => {
-                let status = domain.active ? 'Aktiv' : 'Inaktiv';
-                let status_color = domain.active ? 'bg-green-500' : 'bg-[#e30613]';
+                let status_color = domain.status.code < 1 ? 'bg-green-500' : 'bg-[#e30613]';
 
                 domainList.innerHTML += `
                     <div class="flex justify-between hover:bg-gray-100 mt-2">
@@ -23,7 +22,7 @@ function updateDomainList() {
                         </div>
                         <div class="flex justify-center items-center">
                             <div class="${status_color} p-0.5 px-2 rounded-md">
-                                <span class="text-white text-sm">${status}</span>
+                                <span class="text-white text-sm">${domain.status.text}</span>
                             </div>
                         </div>
                     </div>
