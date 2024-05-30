@@ -1,15 +1,14 @@
 // Function to fetch and update the domain list
 function updateDomainList() {
-    // Send an AJAX request to your backend (api.php)
     fetch('../backend/class-api.php', {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: 'action=getDomainAccounts' // Adjust based on your backend
+        body: 'action=getDomainAccounts'
     })
     .then(response => response.json())
     .then(data => {
         const domainList = document.getElementById('domainAccountList');
-        domainList.innerHTML = ''; // Clear existing list
+        domainList.innerHTML = '';
 
         if (data.length > 0) {
             data.forEach(domain => {
@@ -43,40 +42,46 @@ function updateDomainList() {
 document.getElementById('domainAccountForm').addEventListener('submit', function(event) {
     event.preventDefault();
 
-    // disable submit button
     const submitButton = document.getElementById('createDomainAccount');
     submitButton.disabled = true;
 
-    const formData = new FormData(this);
-    formData.append('action', 'createDomainAccount'); // Add action to form data
+    const loadingSpinner = document.getElementById('loadingResult');
+    loadingSpinner.classList.remove('hidden');
 
-    // Send form data to backend
+    const resultElement = document.getElementById('result');
+    resultElement.textContent = '';
+
+    const formData = new FormData(this);
+    formData.append('action', 'createDomainAccount');
+
     fetch('../backend/class-api.php', {
         method: 'POST',
         body: formData
     })
     .then(response => response.json())
     .then(data => {
-        // Update modal with response
-        document.getElementById('result').classList.remove('text-green-500', 'text-[#e30613]');
-        document.getElementById('result').classList.add(data.error ? 'text-[#e30613]' : 'text-green-500');
+        resultElement.classList.remove('text-green-500', 'text-[#e30613]');
+        resultElement.classList.add(data.error ? 'text-[#e30613]' : 'text-green-500');
 
         if(data.error) {
-            document.getElementById('result').textContent = data.error;
+            loadingSpinner.classList.add('hidden');
+            resultElement.textContent = data.error;
             submitButton.disabled = false;
             return;
         }
 
-        document.getElementById('result').textContent = data.success;
+        loadingSpinner.classList.add('hidden');
+        resultElement.textContent = data.success;
         
         updateDomainList();
         submitButton.disabled = false;
     })
     .catch(error => {
         console.log(error);
-        document.getElementById('result').classList.remove('text-green-500', 'text-[#e30613]');
-        document.getElementById('result').classList.add('text-[#e30613]');
-        document.getElementById('result').textContent = 'Ein Fehler ist aufgetreten';
+        loadingSpinner.classList.add('hidden');
+        resultElement.classList.remove('text-green-500', 'text-[#e30613]');
+        resultElement.classList.add('text-[#e30613]');
+        resultElement.textContent = 'Ein Fehler ist aufgetreten';
         submitButton.disabled = false;
     });
 });
