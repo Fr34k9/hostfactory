@@ -17,7 +17,7 @@ function updateDomainList() {
                 domainList.innerHTML += `
                     <div class="flex justify-between hover:bg-gray-100 mt-2">
                         <div class="flex flex-col">
-                            <span class="font-medium">${domain.name}</span>
+                            <span class="font-medium max-w-72 lg:max-w-sm break-words">${domain.name}</span>
                             <span class="text-sm text-gray-500">${domain.created}</span>
                         </div>
                         <div class="flex justify-center items-center">
@@ -82,6 +82,9 @@ document.getElementById('domainAccountForm').addEventListener('submit', function
         resultElement.classList.add('text-[#e30613]');
         resultElement.textContent = 'Ein Fehler ist aufgetreten';
         submitButton.disabled = false;
+
+        // Update domain list even if error, because somehow domain was
+        updateDomainList();
     });
 });
 
